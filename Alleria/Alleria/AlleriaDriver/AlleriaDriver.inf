@@ -1,0 +1,20 @@
+;
+; AlleriaDriver.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Sample ; TODO: edit Class
+ClassGuid={78A1C341-4539-11d3-B88D-00C04FAD5171} ; TODO: edit ClassGuid
+Provider=%Hadi Brais%
+CatalogFile=AlleriaDriver.cat
+DriverVer= 1.0; TODO: set DriverVer in stampinf property pages
+
+[Strings]
+Hadi Brais
+
+;[AlleriaDriver_Device.NT.Wdf]
+;KmdfService =  AlleriaDriver, AlleriaDriver_wdfsect
+
+;[AlleriaDriver_wdfsect]
+;KmdfLibraryVersion = $KMDFVERSION$
