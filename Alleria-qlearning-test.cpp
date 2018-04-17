@@ -306,7 +306,7 @@ void initializeQ(){
 
 /////////////////////////////////////////////////////////////////////////////////
 
-const int readDelay = 500;                   //allow time for the agent to execute after it sets its physical state
+const int readDelay = 10;                   //allow time for the agent to execute after it sets its physical state
 const float explorationMinutes = 2.5;        //the desired exploration time in minutes 
 const float explorationConst = (explorationMinutes*60.0)/((float(readDelay))/1000.0);  //this is the approximate exploration time in units of number of times through the loop
 
