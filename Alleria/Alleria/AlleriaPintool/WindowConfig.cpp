@@ -378,16 +378,14 @@ BOOL WINDOW_CONFIG::EventFromConfig(tinyxml2::XMLElement *xmlEl, EVENT **e)
 		eFunc->call = xmlEl->FirstChildElement(WINDOW_CONFIG_TAG_CALL) != NULL;
 		*e = eFunc;
 
-		// -2 is used so that IsFuncInteresting returns true only twice.
-		// Once for on call instrumentation and once on return.
 		if (isDecorated)
 			s_interestingFuncs.insert(
 			std::make_pair(PIN_UndecorateSymbolName(fname, UNDECORATION::UNDECORATION_NAME_ONLY),
-			std::make_pair(-2, 0)));
+			std::make_pair(0, 0)));
 		else
 			s_interestingFuncs.insert(
 			std::make_pair(fname,
-			std::make_pair(-2, 0)));
+			std::make_pair(0, 0)));
 	}
 	else if (root = xmlEl->FirstChildElement(WINDOW_CONFIG_TAG_THREADS))
 	{
@@ -1522,18 +1520,12 @@ VOID WINDOW_CONFIG::InitDefault()
 
 BOOL WINDOW_CONFIG::IsFuncInteresting(std::string undecoratedName)
 {
-	if (IsWindowOpen())
+	std::map<std::string, std::pair<UINT64, UINT64> >::iterator it =
+		s_interestingFuncs.find(undecoratedName);
+	if (it != s_interestingFuncs.end())
 	{
-		std::map<std::string, std::pair<UINT64, UINT64> >::iterator it =
-			s_interestingFuncs.find(undecoratedName);
-		if (it != s_interestingFuncs.end())
-		{
-			if (it->second.first == -2 || it->second.first == -1)
-			{
-				++it->second.first;
-				return TRUE;
-			}
-		}
+		// TODO: check image too.
+		return TRUE;
 	}
 
 	return FALSE;
@@ -2065,9 +2057,10 @@ BOOL WINDOW_CONFIG::ReportInternal(UINT64 tuid, EVENT *e, WINDOW_CONFIG::EVENT_T
 									s_interestingFuncs.find(
 										PIN_UndecorateSymbolName(RTN_Name(rtn), UNDECORATION::UNDECORATION_NAME_ONLY));
 
-								UINT64 callCount = ATOMIC::OPS::Load(&it->second.first);
+								UINT64 count = eType == EVENT_TYPE::FunctionCall ?
+									ATOMIC::OPS::Load(&it->second.first) : ATOMIC::OPS::Load(&it->second.second);
 
-								if (eFunc->threshold <= callCount)
+								if (eFunc->threshold <= count)
 								{
 									eFunc->isTriggered = TRUE;
 									isTriggered = TRUE;

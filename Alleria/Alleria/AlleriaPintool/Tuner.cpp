@@ -25,7 +25,7 @@ VOID Tuner::Init(BOOL enable)
 		s_previousPhase = Phase::InvalidPhase;
 		s_totalAppThreadLastWaitingTime = 0;
 		s_totalProcessingThreadLastWaitingTime = 0;
-		s_tp = 0.9f;
+		s_tp = 1.0f;
 		s_tay1 = 0.1f;
 		s_tay2 = 0.1f;
 		s_taz = 0.01f;
@@ -61,7 +61,7 @@ TunerAction Tuner::OnTimerInterrupt(TIME_STAMP *totalProcessingThreadRunningWait
 		++s_stuckInX;
 		if (((ptit > (s_totalProcessingThreadLastWaitingTime +
 			(s_totalProcessingThreadLastWaitingTime * s_tp))) &&
-			(s_previousPhase != Phase::YPhase)) || s_stuckInX > 4)
+			(s_previousPhase != Phase::YPhase)) || s_stuckInX > 10)
 		{
 			s_previousPhase = s_currentPhase;
 			s_currentPhase = Phase::ZPhase;

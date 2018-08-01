@@ -2207,26 +2207,26 @@ VOID InstrumentBufferAllocationForTrace(TRACE trace,
 		IARG_END);
 }
 
-VOID IntrumentRoutineOfTrace(TRACE routineFirstTrace)
-{
-	if (RTN_Valid(TRACE_Rtn(routineFirstTrace)) &&
-		WINDOW_CONFIG::IsFuncInteresting(
-		PIN_UndecorateSymbolName(RTN_Name(TRACE_Rtn(routineFirstTrace)), UNDECORATION::UNDECORATION_NAME_ONLY)))
-	{
-		WINDOW_CONFIG::ReportFunctionCall(TRACE_Rtn(routineFirstTrace));
-		/*TRACE_InsertCall(routineFirstTrace, IPOINT_BEFORE, (AFUNPTR)ANALYSIS_ROUTINES::AnalyzeInterestingFuncCall,
-			IARG_FAST_ANALYSIS_CALL,
-			IARG_ADDRINT, TRACE_Address(routineFirstTrace),
-			IARG_END);*/
-	}
-}
+//VOID IntrumentRoutineOfTrace(TRACE routineFirstTrace)
+//{
+//	if (RTN_Valid(TRACE_Rtn(routineFirstTrace)) &&
+//		WINDOW_CONFIG::IsFuncInteresting(
+//		PIN_UndecorateSymbolName(RTN_Name(TRACE_Rtn(routineFirstTrace)), UNDECORATION::UNDECORATION_NAME_ONLY)))
+//	{
+//		WINDOW_CONFIG::ReportFunctionCall(TRACE_Rtn(routineFirstTrace));
+//		/*TRACE_InsertCall(routineFirstTrace, IPOINT_BEFORE, (AFUNPTR)ANALYSIS_ROUTINES::AnalyzeInterestingFuncCall,
+//			IARG_FAST_ANALYSIS_CALL,
+//			IARG_ADDRINT, TRACE_Address(routineFirstTrace),
+//			IARG_END);*/
+//	}
+//}
 
 VOID InstrumentTrace(TRACE trace, VOID *arg)
 {
 	UINT32 requiredBufferSize = 0;
 	ANALYSIS_CALLS_TRACE act;
 
-	IntrumentRoutineOfTrace(trace);
+	//IntrumentRoutineOfTrace(trace);
 
 	//RTN rtn = TRACE_Rtn(trace);
 	//if (RTN_Valid(rtn))
@@ -2976,7 +2976,7 @@ VOID Timer(VOID *arg)
 		GetCurrentTimestamp(timestamp);
 		WINDOW_CONFIG::ReportTimestamp(lstate.startingTimeHighKey, lstate.startingTimeLowKey, timestamp);
 
-		if (KnobTunerEnabled &&
+		if (KnobTunerEnabled && WINDOW_CONFIG::IsWindowOpen() &&
 			/* Wait until the most recent processing thread, if any, starts running */
 			(action == TunerAction::None || PIN_SemaphoreIsSet(&GLOBAL_STATE::tunerSemaphore)) &&
 			(GLOBAL_STATE::processingThreadsIds.size() < Tuner::MaxThreadCount))

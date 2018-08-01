@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
 	BOOL error;
 
-	error = ProcessProfile("D:\\PinRuns\\mcf 32 opt\\g.ap");
+	error = ProcessProfile("D:\\PinRuns\\mcf 32 dbg\\g.ap");
 	error = ProcessProfile("D:\\PinRuns\\mcf 32 opt\\1.ap");
 	error = ProcessProfile("D:\\PinRuns\\mcf 32 opt\\2.ap");
 	error = ProcessProfile("D:\\PinRuns\\mcf 32 opt\\3.ap");

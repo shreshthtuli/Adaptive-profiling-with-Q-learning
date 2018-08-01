@@ -286,6 +286,11 @@ VOID IMAGE_COLLECTION::ProcessRoutine(RTN routine, BOOL isReprocess)
 	if (WINDOW_CONFIG::IsFuncInteresting(
 		PIN_UndecorateSymbolName(RTN_Name(routine), UNDECORATION::UNDECORATION_NAME_ONLY)))
 	{
+		RTN_InsertCall(routine, IPOINT_BEFORE, (AFUNPTR)AnalyzeInterestingFuncCall,
+			IARG_FAST_ANALYSIS_CALL,
+			IARG_ADDRINT, RTN_Address(routine),
+			IARG_END);
+
 		RTN_InsertCall(routine, IPOINT_AFTER, (AFUNPTR)AnalyzeInterestingFuncRet,
 			IARG_FAST_ANALYSIS_CALL,
 			IARG_ADDRINT, RTN_Address(routine),
